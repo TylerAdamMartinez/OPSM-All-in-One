@@ -3,7 +3,6 @@ import OPSM_equations as equ
 import openpyxl
 from datetime import date
 
-today = date.today() 
 
 #! Find a way where you don't have to retype this on each file
 import matplotlib.pyplot as plt
@@ -12,6 +11,7 @@ import pandas as pd
 def main_menu():
     print('\n')
     print('+--------------------------------------------------+')
+    print('|                    Main Menu                     |')
     print('| 1. Moving Average                                |')
     print('| 2. Weighted Moving Average                       |')
     print('| 3. Exponential Smoothing                         |')
@@ -23,41 +23,53 @@ def main_menu():
     print('+--------------------------------------------------+')
 
 
-def safely_terminate_program():
+def save_menu():
+    print('\n')
+    print('+--------------------------------------------------+')
+    print('|                    Save Menu                     |')
+    print('| 1. Moving Average                                |')
+    print('| 2. Weighted Moving Average                       |')
+    print('| 3. Exponential Smoothing                         |')
+    print('| 4. Simple Linear Regression                      |')
+    print('| 5. Correlation Coefficient                       |')
+    print('| b. Basic Stats (count, mean, std, min, max, etc) |')
+    print('+--------------------------------------------------+')
+
+
+def safely_terminate_program(data):
 
     #TODO save there information into an excel sheet here
-    """
-    usr_ans = input("Would you like to save any forcasts to an excel sheet [Y/N]")
+    
+    usr_ans = input("Would you like to save any forcasts to an excel sheet?\n[Press 'Y' to save, or any other key to exit]\n")
 
-    if usr_ans == 'Y' or 'y':
-        main_menu()
+    if usr_ans == 'y':
+        save_menu()
         usr_ans = input("Choose one from the list to save: ")
 
-        workbook = openpyxl.Workbook()
-        excel_sheet = workbook.active
-
-        save_item = excel_sheet.cell(row = 1, column = 1)
-        save_item.value = "example"
-
-        today_date = today.strftime("%d-%m-%Y")
-
-        sheet_title = "OPSM saved Answer" + today_date
-
-        workbook.create_sheet(index=1, title=sheet_title)
-        workbook.save("test_data.xlsx")
-
+        save_work(data)
         print("The answers were saved successfully")
         
-    else:
-        pass
+    else: 
+        print('The program was terminated safely\n')
+        quit()
     
-    """
     print('The program was terminated safely\n')
-    
     quit()
 
+def save_work(data):
 
+    workbook = openpyxl.Workbook()
+    excel_sheet = workbook.active
 
+    for i in range(len(data)):
+        save_item = excel_sheet.cell(row = i + 1, column = 1)
+        save_item.value = data[i]
+
+    today = date.today() 
+    today_date = today.strftime("%d-%m-%Y")
+
+    save_file_name = "OPSM_" + today_date + "_.xlsx"
+    workbook.save(save_file_name)
 
 class print_data(object):
     def __init__(self, data, path_of_datafile, yaxis_units, xaxis_units):
@@ -90,8 +102,6 @@ class print_data(object):
         moved_avg = equ.moving_average(data, moving_amt)
         print(moved_avg)
 
-
-
     def weighted_moving_average(self):
         print('Weighted Moving Average: \n')
         moving_amt = int(input("What is the moving amount: "))
@@ -106,12 +116,14 @@ class print_data(object):
         weighted_moved_avg = equ.weighted_moving_average(data, moving_amt, weight)
         print(weighted_moved_avg)
         
-
     def exponential_smoothing_forcast(self):
         print('Exponential Smoothing: \n')
+        equ.exponential_smoothing_forcast()
 
     def simple_linear_regression_forcast(self):
         print('Simple Linear Regression: \n')
+        equ.simple_linear_regression_forcast()
 
     def correlation_coefficient(self):
         print('Correlation Coefficient: \n')
+        equ.correlation_coefficient()

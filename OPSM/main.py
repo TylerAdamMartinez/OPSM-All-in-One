@@ -61,7 +61,8 @@ while(usr_ans is not 'q'):
         Print_Data.graph()
 
     elif usr_ans == 'q':
-        app.safely_terminate_program()
+        #TODO ydata_arr is temperary and is only to be used for testing in the future usrs will be able to pick what they want to be saved and that would be saved.
+        app.safely_terminate_program(ydata_arr)
 
     else:
         pass
